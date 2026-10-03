@@ -1,0 +1,40 @@
+topic:
+  name: "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"
+  domain: "Natural Language Processing / Information Retrieval"
+  time_window:
+    start_year: 2017
+    end_year: 2024
+  target_corpus_size:
+    min: 50
+    max: 100
+    frozen_count: 72
+
+boundaries:
+  in_scope:
+    - Foundational representation and attention architectures that modern RAG decoders and retrievers rely upon (Transformer, BERT, BART, T5).
+    - Dense retrieval architectures specifically engineered for open-domain QA and passage grounding (DPR, ANCE, ColBERT, Contriever).
+    - Seminal retrieval-augmented generation paradigms (RAG-Sequence, RAG-Token, REALM, kNN-LM).
+    - Multi-passage and encoder-decoder cross-attention fusion systems (FiD, EMDR2).
+    - Scaled chunked retrieval transformers (RETRO, Atlas).
+    - Iterative, recursive, and multi-step retrieval generation (FLARE, ITER-RETGEN, Self-Ask).
+    - Self-reflective, adaptive, and corrective retrieval frameworks (Self-RAG, Corrective RAG / CRAG, Adaptive-RAG, Speculative RAG).
+    - Foundational survey delineating the standard RAG paradigm taxonomy (Gao et al., 2023).
+
+  inclusion_criteria:
+    criterion_1: "Introduces a named retrieval-augmented generation method or fundamental architectural modification."
+    criterion_2: "Introduces a foundational concept or retrieval technique that >=3 subsequent RAG papers explicitly build on (e.g. dense passage bi-encoders, fusion-in-decoder cross-attention)."
+    criterion_3: "Seminal upstream architectural prerequisite without which the RAG formulation cannot be mathematically or conceptually grasped (e.g. Attention mechanism, bidirectional masked pre-training)."
+
+  exclusion_criteria:
+    - Pure downstream domain applications without architectural contributions (e.g. applying off-the-shelf RAG to medical billing).
+    - Pure information retrieval papers lacking neural generative conditioning, unless recognized as a core foundational retriever (e.g. standard BM25 benchmark papers).
+    - Generic survey papers that do not contribute a widely recognized architectural taxonomy.
+    - Works outside the 2017-2024 window.
+
+data_sources:
+  primary:
+    name: "Semantic Scholar Academic Graph API"
+    base_url: "https://api.semanticscholar.org/graph/v1"
+  secondary:
+    name: "arXiv API"
+    base_url: "http://export.arxiv.org/api/query"
