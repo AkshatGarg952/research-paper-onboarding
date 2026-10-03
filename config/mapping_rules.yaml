@@ -1,0 +1,69 @@
+version: "1.0"
+description: "Formal mapping logic and relationship construction rules for RAG knowledge state generation."
+
+text_matching:
+  case_sensitive: false
+  word_boundary_match: true
+  min_alias_token_length: 1
+  stopword_blacklist:
+    - "rag"  # Handled via explicit phrase matching "retrieval-augmented generation" or capital RAG to avoid substring collisions
+    - "memory"
+    - "model"
+
+relationship_rules:
+  INTRODUCES_CONCEPT:
+    source_type: "paper"
+    target_type: "concept"
+    direction: "paper -> concept"
+    rule: "Create edge if concept.introduced_by equals paper.paper_id."
+    confidence: "high"
+    evidence_template: "{paper_title} ({year}) first formalized and introduced {concept_name}."
+
+  INTRODUCES_METHOD:
+    source_type: "paper"
+    target_type: "method"
+    direction: "paper -> method"
+    rule: "Create edge if method.introduced_by equals paper.paper_id."
+    confidence: "high"
+    evidence_template: "{paper_title} ({year}) introduced the {method_name} method ({method_description})."
+
+  EXTENDS:
+    source_type: "method"
+    target_type: "method"
+    direction: "method_child -> method_parent"
+    rule: "Create edge if method.extends_method equals parent_method.id."
+    confidence: "high"
+    evidence_template: "{child_method_name} directly modifies and extends the architectural formulation of {parent_method_name}."
+
+  USES_CONCEPT:
+    source_type: "method"
+    target_type: "concept"
+    direction: "method -> concept"
+    rule: "Create edge for each concept in method.uses_concepts."
+    confidence: "high"
+    evidence_template: "{method_name} structurally utilizes {concept_name} as an essential component."
+
+  REQUIRES_UNDERSTANDING:
+    source_type: "concept"
+    target_type: "concept"
+    direction: "concept_dependent -> concept_prerequisite"
+    rule: "Create edge for each prerequisite in concept.requires_understanding."
+    confidence: "high"
+    evidence_template: "Comprehending {dependent_concept} requires prior understanding of {prerequisite_concept}."
+
+  BUILDS_ON:
+    source_type: "paper"
+    target_type: "paper"
+    direction: "paper_downstream -> paper_upstream"
+    rule: "Create edge if Paper A references Paper B AND (Paper B introduced a concept used by Paper A OR Paper A extends a method from Paper B)."
+    confidence: "high"
+    evidence_template: "{downstream_paper_title} ({downstream_year}) builds upon foundational work in {upstream_paper_title} ({upstream_year}), utilizing {linked_entity}."
+
+integrity_constraints:
+  enforce_dag_on:
+    - "REQUIRES_UNDERSTANDING"
+    - "EXTENDS"
+  disallow_orphans:
+    concepts_must_have_introducer: true
+    methods_must_have_introducer: true
+  evidence_required: true

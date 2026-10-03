@@ -1,0 +1,320 @@
+version: "1.0"
+domain: "Retrieval-Augmented Generation for NLP (2017-2024)"
+
+concepts:
+  - id: "self-attention"
+    name: "Self-Attention Mechanism"
+    definition: "Mechanism computing pairwise token interaction weights within a sequence, forming the foundation of modern Transformer language representations."
+    aliases: ["scaled dot-product attention", "multi-head attention", "intra-attention"]
+    introduced_by: "vaswani_2017"
+    requires_understanding: []
+
+  - id: "cross-attention"
+    name: "Cross-Attention Mechanism"
+    definition: "Attention mechanism conditioning decoder token representations directly on external or encoder sequence representations."
+    aliases: ["encoder-decoder attention", "contextual cross-attention"]
+    introduced_by: "vaswani_2017"
+    requires_understanding: ["self-attention"]
+
+  - id: "pretrained-encoder"
+    name: "Pretrained Bidirectional Encoders"
+    definition: "Deep contextualized bidirectional language representations pretrained via masked language modeling, producing dense vector representations of arbitrary text."
+    aliases: ["BERT-style encoders", "bidirectional transformers", "masked language model"]
+    introduced_by: "devlin_2018"
+    requires_understanding: ["self-attention"]
+
+  - id: "knowledge-grounding"
+    name: "External Knowledge Grounding"
+    definition: "Conditioning model outputs on verifiable external evidence sources rather than relying purely on internal parametric weights."
+    aliases: ["evidence grounding", "fact-verification", "grounded generation"]
+    introduced_by: "thorne_2018"
+    requires_understanding: []
+
+  - id: "seq2seq-denoising"
+    name: "Sequence-to-Sequence Denoising"
+    definition: "Autoregressive generation architecture trained to reconstruct corrupted input text, ideal for synthesizing answers from multi-document contexts."
+    aliases: ["encoder-decoder pretraining", "BART-style generation", "text-to-text generation"]
+    introduced_by: "lewis_2019"
+    requires_understanding: ["cross-attention"]
+
+  - id: "parametric-vs-nonparametric-memory"
+    name: "Parametric vs Non-Parametric Memory"
+    definition: "Dichotomy between static knowledge stored implicitly inside neural network weights versus dynamic knowledge retrieved on-demand from an external text datastore."
+    aliases: ["hybrid memory", "implicit vs explicit memory", "parametric memory"]
+    introduced_by: "petroni_2019"
+    requires_understanding: ["pretrained-encoder"]
+
+  - id: "dense-passage-retrieval"
+    name: "Dense Passage Retrieval"
+    definition: "Mapping queries and candidate text passages into a shared continuous vector space using dual encoders trained with contrastive loss to enable sub-linear maximum inner-product search."
+    aliases: ["dual-encoder retrieval", "bi-encoder retrieval", "DPR-style retrieval", "dense retrieval"]
+    introduced_by: "karpukhin_2020"
+    requires_understanding: ["pretrained-encoder"]
+
+  - id: "nearest-neighbor-inference"
+    name: "Nearest Neighbor Language Modeling"
+    definition: "Linearly interpolating a neural generator's next-token output probability with a non-parametric nearest-neighbor distribution over offline datastore embeddings."
+    aliases: ["kNN-LM", "datastore retrieval", "representation retrieval"]
+    introduced_by: "khandelwal_2019"
+    requires_understanding: ["pretrained-encoder", "parametric-vs-nonparametric-memory"]
+
+  - id: "late-interaction"
+    name: "Late Interaction Token Matching"
+    definition: "Preserving all token-level representations of queries and documents to compute fine-grained MaxSim interaction after independent encoding."
+    aliases: ["ColBERT late interaction", "multi-vector retrieval", "token-level interaction"]
+    introduced_by: "khattab_2020"
+    requires_understanding: ["dense-passage-retrieval"]
+
+  - id: "retrieval-augmented-generation"
+    name: "Retrieval-Augmented Generation"
+    definition: "End-to-end framework combining a neural passage retriever with a sequence-to-sequence generator, conditioning output probability distributions on retrieved evidence."
+    aliases: ["RAG paradigm", "retrieve-then-generate", "neural retrieval-augmentation"]
+    introduced_by: "lewis_2020"
+    requires_understanding: ["dense-passage-retrieval", "seq2seq-denoising", "parametric-vs-nonparametric-memory"]
+
+  - id: "token-marginalization"
+    name: "Token-Level Document Marginalization"
+    definition: "Marginalizing the next-token probability distribution over top-k retrieved passages per generation step, allowing different passages to inform different tokens."
+    aliases: ["RAG-Token", "per-token document routing"]
+    introduced_by: "lewis_2020"
+    requires_understanding: ["retrieval-augmented-generation"]
+
+  - id: "sequence-marginalization"
+    name: "Sequence-Level Document Marginalization"
+    definition: "Conditioning entire generated output sequences on a single retrieved document, marginalizing probabilities across candidate sequences at the document level."
+    aliases: ["RAG-Sequence", "per-document sequence decoding"]
+    introduced_by: "lewis_2020"
+    requires_understanding: ["retrieval-augmented-generation"]
+
+  - id: "fusion-in-decoder"
+    name: "Fusion-in-Decoder Cross-Attention"
+    definition: "Encoding multiple retrieved passages independently and concatenating their representations inside the generative decoder cross-attention layers, scaling retrieval to 100+ documents."
+    aliases: ["FiD cross-attention", "multi-passage fusion", "decoder fusion"]
+    introduced_by: "izacard_2020"
+    requires_understanding: ["cross-attention", "retrieval-augmented-generation"]
+
+  - id: "chunked-cross-attention"
+    name: "Chunked Cross-Attention"
+    definition: "Retrieving nearest-neighbor text chunks per input chunk during autoregressive generation and conditioning decoder blocks at regular token intervals."
+    aliases: ["RETRO chunking", "chunk-level retrieval", "interleaved chunk attention"]
+    introduced_by: "borgeaud_2022"
+    requires_understanding: ["cross-attention", "retrieval-augmented-generation"]
+
+  - id: "attention-distillation"
+    name: "Retriever-Generator Attention Distillation"
+    definition: "Supervising a dense retriever using cross-attention scores computed by a frozen or jointly trained seq2seq generator, eliminating the need for gold retrieval annotations."
+    aliases: ["cross-attention distillation", "EMDR training", "reader-guided retriever tuning"]
+    introduced_by: "izacard_2022_atlas"
+    requires_understanding: ["fusion-in-decoder"]
+
+  - id: "long-tail-knowledge-gap"
+    name: "Long-Tail Knowledge Vulnerability"
+    definition: "Empirical phenomenon where parametric models succeed on head entity knowledge but suffer catastrophic accuracy drops on low-frequency tail entities without external retrieval."
+    aliases: ["PopQA phenomenon", "long-tail deficiency", "entity popularity bias"]
+    introduced_by: "mallen_2022"
+    requires_understanding: ["parametric-vs-nonparametric-memory"]
+
+  - id: "query-decomposition"
+    name: "Multi-Step Query Decomposition"
+    definition: "Decomposing complex, multi-hop user questions into sequential sub-questions that each trigger distinct intermediate retrieval steps."
+    aliases: ["sub-query generation", "compositional question decomposition", "Self-Ask decomposition"]
+    introduced_by: "press_2022"
+    requires_understanding: ["knowledge-grounding"]
+
+  - id: "active-retrieval"
+    name: "Active and Confidence-Triggered Retrieval"
+    definition: "Dynamically initiating retrieval operations during generation based on model uncertainty or token generation confidence, rather than retrieving once upfront."
+    aliases: ["FLARE retrieval", "uncertainty-triggered retrieval", "on-demand search"]
+    introduced_by: "jiang_2023_flare"
+    requires_understanding: ["retrieval-augmented-generation"]
+
+  - id: "iterative-retrieval-generation"
+    name: "Iterative Retrieval-Generation Synergy"
+    definition: "Alternating multi-round pipeline where generated hypotheses inform downstream retrieval queries, and newly retrieved passages guide subsequent generation refinement."
+    aliases: ["ITER-RETGEN cycle", "synergistic retrieval-generation", "multi-turn retrieval loop"]
+    introduced_by: "shao_2023_iterretgen"
+    requires_understanding: ["query-decomposition", "active-retrieval"]
+
+  - id: "self-reflection-retrieval"
+    name: "Self-Reflective Retrieval and Critique"
+    definition: "Integrating special reflection and critique tokens ([Retrieve], [IsREL], [IsSUP], [IsUSE]) into the vocabulary to allow an LM to judge when retrieval is needed and critique evidence quality."
+    aliases: ["Self-RAG", "reflective critique tokens", "self-evaluation retrieval"]
+    introduced_by: "asai_2023_selfrag"
+    requires_understanding: ["active-retrieval", "retrieval-augmented-generation"]
+
+  - id: "context-compression"
+    name: "Post-Retrieval Context Compression"
+    definition: "Compressing or filtering retrieved passages into dense extractive or abstractive summaries before feeding them into generator context windows."
+    aliases: ["RECOMP compression", "passage condensation", "prompt compression"]
+    introduced_by: "xu_2023_recomp"
+    requires_understanding: ["retrieval-augmented-generation"]
+
+  - id: "corrective-retrieval"
+    name: "Corrective Retrieval and Verification"
+    definition: "Evaluating the confidence of retrieved documents with an external evaluator and dynamically falling back to web search or document strip-filtering when relevance is ambiguous."
+    aliases: ["CRAG correction", "corrective search", "retrieval evaluation"]
+    introduced_by: "yan_2024_crag"
+    requires_understanding: ["self-reflection-retrieval"]
+
+  - id: "adaptive-routing"
+    name: "Adaptive Complexity Query Routing"
+    definition: "Classifying incoming query complexity prior to execution to route requests between zero-retrieval, single-hop RAG, or iterative multi-hop pipelines."
+    aliases: ["Adaptive-RAG", "query classification routing", "selective retrieval routing"]
+    introduced_by: "jeong_2024_adaptiverag"
+    requires_understanding: ["long-tail-knowledge-gap", "self-reflection-retrieval"]
+
+  - id: "hierarchical-tree-retrieval"
+    name: "Hierarchical Recursive Tree Retrieval"
+    definition: "Recursively clustering and summarizing text chunks into an abstraction tree, allowing queries to retrieve at either granular sentence levels or high-level thematic summaries."
+    aliases: ["RAPTOR tree retrieval", "recursive abstractive indexing"]
+    introduced_by: "sarthi_2024_raptor"
+    requires_understanding: ["dense-passage-retrieval"]
+
+  - id: "graph-augmented-retrieval"
+    name: "Graph-Augmented Entity Retrieval"
+    definition: "Extracting entity-relationship graphs and community structures from text collections to synthesize answers for global, corpus-wide queries."
+    aliases: ["GraphRAG", "knowledge graph RAG", "community summary retrieval"]
+    introduced_by: "edge_2024_graphrag"
+    requires_understanding: ["retrieval-augmented-generation"]
+
+
+methods:
+  - id: "transformer"
+    name: "Transformer Encoder-Decoder"
+    description: "Self-attention and cross-attention based sequence transduction model."
+    introduced_by: "vaswani_2017"
+    uses_concepts: ["self-attention", "cross-attention"]
+    extends_method: null
+
+  - id: "bert"
+    name: "BERT"
+    description: "Bidirectional transformer encoder trained with masked language modeling."
+    introduced_by: "devlin_2018"
+    uses_concepts: ["self-attention", "pretrained-encoder"]
+    extends_method: "transformer"
+
+  - id: "knn-lm"
+    name: "kNN-LM"
+    description: "Nearest neighbor language model interpolating next-token distributions with datastore vector distances."
+    introduced_by: "khandelwal_2019"
+    uses_concepts: ["nearest-neighbor-inference", "parametric-vs-nonparametric-memory"]
+    extends_method: null
+
+  - id: "dpr"
+    name: "Dense Passage Retrieval"
+    description: "Dual-encoder architecture using BERT encoders for query and passage mapping with in-batch negatives."
+    introduced_by: "karpukhin_2020"
+    uses_concepts: ["dense-passage-retrieval", "pretrained-encoder"]
+    extends_method: "bert"
+
+  - id: "colbert"
+    name: "ColBERT"
+    description: "Late-interaction retrieval scoring token embeddings via contextualized MaxSim operations."
+    introduced_by: "khattab_2020"
+    uses_concepts: ["late-interaction", "dense-passage-retrieval"]
+    extends_method: "dpr"
+
+  - id: "rag-token"
+    name: "RAG-Token"
+    description: "Retrieval-augmented model marginalizing retrieved passage likelihood per generated token."
+    introduced_by: "lewis_2020"
+    uses_concepts: ["retrieval-augmented-generation", "token-marginalization", "dense-passage-retrieval"]
+    extends_method: "dpr"
+
+  - id: "rag-sequence"
+    name: "RAG-Sequence"
+    description: "Retrieval-augmented model conditioning entire output sequences on single retrieved passages and marginalizing at sequence level."
+    introduced_by: "lewis_2020"
+    uses_concepts: ["retrieval-augmented-generation", "sequence-marginalization", "dense-passage-retrieval"]
+    extends_method: "rag-token"
+
+  - id: "fid"
+    name: "Fusion-in-Decoder"
+    description: "Cross-attention fusion architecture processing retrieved passages independently in the encoder and fusing in decoder attention layers."
+    introduced_by: "izacard_2020"
+    uses_concepts: ["fusion-in-decoder", "retrieval-augmented-generation"]
+    extends_method: "rag-token"
+
+  - id: "retro"
+    name: "RETRO"
+    description: "Autoregressive language model incorporating chunked cross-attention over retrieved token chunks at trillion-token scale."
+    introduced_by: "borgeaud_2022"
+    uses_concepts: ["chunked-cross-attention", "retrieval-augmented-generation"]
+    extends_method: "rag-token"
+
+  - id: "atlas"
+    name: "Atlas"
+    description: "Jointly pretrained retriever and FiD generator utilizing Attention Distillation for few-shot learning."
+    introduced_by: "izacard_2022_atlas"
+    uses_concepts: ["attention-distillation", "fusion-in-decoder"]
+    extends_method: "fid"
+
+  - id: "self-ask"
+    name: "Self-Ask"
+    description: "Prompt-guided compositional question answering that explicitly generates sub-questions and searches intermediate answers."
+    introduced_by: "press_2022"
+    uses_concepts: ["query-decomposition", "knowledge-grounding"]
+    extends_method: null
+
+  - id: "react"
+    name: "ReAct"
+    description: "Synergistic reasoning-acting framework that alternates between generating verbal reasoning traces and calling retrieval actions."
+    introduced_by: "yao_2022"
+    uses_concepts: ["query-decomposition", "knowledge-grounding"]
+    extends_method: "self-ask"
+
+  - id: "replug"
+    name: "REPLUG"
+    description: "Black-box RAG architecture tuning a dense retriever using ensemble generation probabilities from frozen LLMs."
+    introduced_by: "shi_2023_replug"
+    uses_concepts: ["retrieval-augmented-generation", "dense-passage-retrieval"]
+    extends_method: "rag-token"
+
+  - id: "flare"
+    name: "FLARE"
+    description: "Forward-looking active retrieval that monitors sentence token confidence to dynamically initiate retrieval queries."
+    introduced_by: "jiang_2023_flare"
+    uses_concepts: ["active-retrieval", "retrieval-augmented-generation"]
+    extends_method: "rag-token"
+
+  - id: "iter-retgen"
+    name: "ITER-RETGEN"
+    description: "Iterative synergistic loop alternating between generation-conditioned retrieval and retrieval-conditioned generation."
+    introduced_by: "shao_2023_iterretgen"
+    uses_concepts: ["iterative-retrieval-generation", "active-retrieval"]
+    extends_method: "flare"
+
+  - id: "self-rag"
+    name: "Self-RAG"
+    description: "Self-reflective framework generating special reflection tokens to adaptively decide retrieval need, relevance, and factual support."
+    introduced_by: "asai_2023_selfrag"
+    uses_concepts: ["self-reflection-retrieval", "active-retrieval"]
+    extends_method: "flare"
+
+  - id: "crag"
+    name: "Corrective RAG"
+    description: "Retrieval evaluation pipeline that grades retrieved passage confidence and triggers corrective web search or strip-filtering."
+    introduced_by: "yan_2024_crag"
+    uses_concepts: ["corrective-retrieval", "self-reflection-retrieval"]
+    extends_method: "self-rag"
+
+  - id: "adaptive-rag"
+    name: "Adaptive-RAG"
+    description: "Adaptive complexity routing directing simple queries to parametric memory and complex multi-step queries to iterative RAG."
+    introduced_by: "jeong_2024_adaptiverag"
+    uses_concepts: ["adaptive-routing", "self-reflection-retrieval"]
+    extends_method: "crag"
+
+  - id: "raptor"
+    name: "RAPTOR"
+    description: "Recursive abstraction tree organizing documents into multi-layered clusters for hierarchical retrieval."
+    introduced_by: "sarthi_2024_raptor"
+    uses_concepts: ["hierarchical-tree-retrieval", "dense-passage-retrieval"]
+    extends_method: "dpr"
+
+  - id: "graph-rag"
+    name: "Graph RAG"
+    description: "Entity-relation graph extraction with community clustering for multi-document synthesis."
+    introduced_by: "edge_2024_graphrag"
+    uses_concepts: ["graph-augmented-retrieval", "retrieval-augmented-generation"]
+    extends_method: "rag-token"
