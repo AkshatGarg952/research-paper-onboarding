@@ -1,0 +1,10 @@
+{
+  "title": "Hierarchical Recursive Context Compression for Enterprise Knowledge Grounding",
+  "abstract": "Enterprise documents frequently exceed generator context windows. We present an architecture that integrates RAPTOR hierarchical tree retrieval with RECOMP post-retrieval context compression. By recursively clustering passage nodes and applying extractive summarization before decoder cross-attention, our approach preserves multi-level factual grounding while eliminating prompt distracters.",
+  "year": 2024,
+  "authors": [
+    "Elena Rostova",
+    "Marcus Vance"
+  ],
+  "venue": "Preprint"
+}

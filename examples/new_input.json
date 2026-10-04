@@ -1,0 +1,10 @@
+{
+  "title": "Adaptive Retrieval-Augmented Generation with Learned Retrieval Necessity",
+  "abstract": "We propose a method that extends self-reflective retrieval by learning when retrieval is necessary during generation. Unlike Self-RAG which uses fixed reflection tokens, our approach uses a lightweight classifier trained on the generator's internal uncertainty to trigger retrieval only when the model's confidence drops below a dynamic threshold. We combine this with iterative retrieval, allowing multiple retrieval rounds within a single generation pass. Experiments on Natural Questions and TriviaQA show improvements over Self-RAG and CRAG baselines.",
+  "year": 2024,
+  "authors": [
+    "Amina Al-Mansoor",
+    "David Chen"
+  ],
+  "venue": "Preprint"
+}

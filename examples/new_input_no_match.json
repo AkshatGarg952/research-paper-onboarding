@@ -1,0 +1,12 @@
+{
+  "title": "Instant Neural Graphics Primitives with a Multiresolution Hash Encoding",
+  "abstract": "Neural graphics primitives, such as neural radiance fields and signed distance functions, require minutes to hours of optimization. We introduce a multiresolution hash encoding of input coordinates implemented on CUDA. By training a tiny two-layer MLP, our system achieves peak signal-to-noise ratio in seconds, synthesizing novel photorealistic views of 3D scenes without 3D geometric meshes.",
+  "year": 2022,
+  "authors": [
+    "Thomas Müller",
+    "Alex Evans",
+    "Christoph Schied",
+    "Alexander Keller"
+  ],
+  "venue": "SIGGRAPH"
+}
