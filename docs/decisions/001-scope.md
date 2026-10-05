@@ -1,16 +1,15 @@
-# ADR 001: Problem Definition, Scope Lock, and Non-Goals
+﻿# ADR 001: Problem Definition, Scope Lock, and Non-Goals
 
 - Status: Accepted
 - Date: 2026-10-03
 - Domain: Domain B (Research Paper Onboarding)
-- Focused Area: Retrieval-Augmented Generation (RAG) in NLP (2017–2024)
+- Focused Area: Retrieval-Augmented Generation (RAG) in NLP (2017â€“2024)
 - Core Use Case: Prerequisite Reading Path Generation for Unseen Papers
 
----
 
 ## 1. Context and Motivation
 
-When someone starts research in Retrieval-Augmented Generation (RAG), the biggest hurdle is not finding papers—it is figuring out what to read first and why. Between 2017 and 2024, the field produced dozens of architectural variants that build directly on one another. 
+When someone starts research in Retrieval-Augmented Generation (RAG), the biggest hurdle is not finding papersâ€”it is figuring out what to read first and why. Between 2017 and 2024, the field produced dozens of architectural variants that build directly on one another. 
 
 Existing discovery tools do not solve this problem:
 - Google Scholar ranks papers by citation counts, which favors older seminal work regardless of immediate relevance to a specific paper.
@@ -19,7 +18,6 @@ Existing discovery tools do not solve this problem:
 
 When an engineer or graduate student encounters a modern method like Self-RAG or CRAG, they face concepts like dual-encoder retrieval, cross-attention fusion, chunked retrieval, and reflection tokens. Reading these papers without understanding their direct predecessors leads to constant context switching and confusion.
 
----
 
 ## 2. Target User and Primary Scenario
 
@@ -27,7 +25,6 @@ When an engineer or graduate student encounters a modern method like Self-RAG or
 - User Situation: The user has identified or written an abstract for a new paper/proposal outside the corpus (e.g., an adaptive retrieval mechanism with dynamic confidence thresholds).
 - The Core Question: "What foundational and intermediate papers do I need to read to understand this new paper, in what order, and what is the exact reason each paper is required?"
 
----
 
 ## 3. The Single Chosen Use Case
 
@@ -40,16 +37,14 @@ Given a previously unseen paper (title and abstract):
 3. Topological Ordering: Construct a directed acyclic graph (DAG) of the identified prerequisite papers and sort them so earlier foundations are read before downstream extensions.
 4. Evidence Attribution: Output an ordered reading list where every recommendation is accompanied by concrete textual justification explaining the exact conceptual requirement that brought it in.
 
----
 
 ## 4. Corpus Boundary
 
-### Why RAG (2017–2024)?
-1. Well-defined lineage: The core architectural ideas follow a clear line of descent—from Transformers (Vaswani et al., 2017) and BERT (Devlin et al., 2018) to Dense Passage Retrieval (Karpukhin et al., 2020), standard RAG (Lewis et al., 2020), Fusion-in-Decoder (Izacard and Grave, 2021), RETRO (Borgeaud et al., 2022), and self-reflective architectures (Asai et al., 2023; Yan et al., 2024).
-2. Right scale: The core architectural papers naturally total around 60–80 works. This matches the assignment scope (50–100 papers) without needing to pad with irrelevant papers or artificially chop off half a domain.
+### Why RAG (2017â€“2024)?
+1. Well-defined lineage: The core architectural ideas follow a clear line of descentâ€”from Transformers (Vaswani et al., 2017) and BERT (Devlin et al., 2018) to Dense Passage Retrieval (Karpukhin et al., 2020), standard RAG (Lewis et al., 2020), Fusion-in-Decoder (Izacard and Grave, 2021), RETRO (Borgeaud et al., 2022), and self-reflective architectures (Asai et al., 2023; Yan et al., 2024).
+2. Right scale: The core architectural papers naturally total around 60â€“80 works. This matches the assignment scope (50â€“100 papers) without needing to pad with irrelevant papers or artificially chop off half a domain.
 3. Strong dependency structure: In RAG, concepts are tightly coupled. You cannot meaningfully grasp sequence-level marginalization without understanding dual-encoder retrieval and seq2seq models.
 
----
 
 ## 5. Explicit Non-Goals
 
@@ -64,7 +59,6 @@ To keep the implementation focused on knowledge modeling and reasoning rather th
 | Trend prediction and gap detection | Speculative research forecasting is separate from prerequisite path reasoning. |
 | Web UI or complex frontend | An inspectable JSON knowledge state and a clean CLI script are sufficient to validate the system. |
 
----
 
 ## 6. Success Criteria
 
