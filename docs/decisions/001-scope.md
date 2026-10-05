@@ -1,4 +1,4 @@
-﻿# ADR 001: Problem Definition, Scope Lock, and Non-Goals
+# ADR 001: Problem Definition, Scope Lock, and Non-Goals
 
 - Status: Accepted
 - Date: 2026-10-03

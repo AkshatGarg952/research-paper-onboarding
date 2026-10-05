@@ -1,4 +1,4 @@
-﻿# Approach â€” Design Decisions, Reasoning, and Tradeoffs
+# Approach â€” Design Decisions, Reasoning, and Tradeoffs
 
 > **Calyb AI Domain B: Research Paper Onboarding**
 

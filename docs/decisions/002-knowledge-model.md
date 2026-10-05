@@ -1,4 +1,4 @@
-﻿# ADR 002: Knowledge Model Design, Schema, and Mapping Principles
+# ADR 002: Knowledge Model Design, Schema, and Mapping Principles
 
 - Status: Accepted
 - Date: 2026-10-03

@@ -1,4 +1,4 @@
-﻿# Research Paper Onboarding â€” Prerequisite Reading Path Generator
+# Research Paper Onboarding â€” Prerequisite Reading Path Generator
 
 > **Calyb AI Engineering Intern Assignment â€” Domain B**
 
