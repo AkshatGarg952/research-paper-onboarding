@@ -1,15 +1,15 @@
-# Approach â€” Design Decisions, Reasoning, and Tradeoffs
+﻿# Approach  -  Design Decisions, Reasoning and Tradeoffs
 
 > **Calyb AI Domain B: Research Paper Onboarding**
 
-This document explains every significant design decision made in this project: why I chose this topic, how I modeled knowledge, what I deliberately chose NOT to model, how the reasoning algorithm works, and what I would build next.
+This document explains every significant design decision made in this projec like why I chose this topic, how I modeled knowledge, what I deliberately chose NOT to model, how the reasoning algorithm works and what I would build next.
 
 
 ## 1. Problem Statement
 
-A researcher entering the RAG subfield of NLP encounters a fundamental ordering problem. Papers in this field form a dependency graph: you cannot understand Self-RAG without understanding sparse and dense retrieval; you cannot understand dense retrieval without understanding bi-encoder architectures; you cannot understand bi-encoder architectures without understanding BERT. But no paper states these dependencies explicitly â€” they are implied, assumed, and invisible to a newcomer.
+A researcher entering the RAG subfield of NLP encounters a fundamental ordering problem. Papers in this field form a dependency graph: you cannot understand Self-RAG without understanding sparse and dense retrieval; you cannot understand dense retrieval without understanding bi-encoder architectures; you cannot understand bi-encoder architectures without understanding BERT. But no paper states these dependencies explicitly  -  they are implied, assumed and invisible to a newcomer.
 
-The concrete pain: a researcher is handed a paper (e.g., "Self-RAG: Learning to Retrieve, Generate, and Critique") and told to understand it before a meeting in a week. They read it, get lost at section 2.3 ("we build upon DPR-style dense retrieval and the FiD reader"), and then face an unguided search across a 70+ paper field.
+The concrete pain: a researcher is handed a paper (e.g., "Self-RAG: Learning to Retrieve, Generate, and Critique") and told to understand it before a meeting in a week. They read it, get lost at section 2.3 ("we build upon DPR-style dense retrieval and the FiD reader") and then face an unguided search across a 70+ paper field.
 
 The question this system answers: **given this paper, what is the minimal, dependency-ordered set of papers I must read first?**
 
@@ -18,28 +18,28 @@ The question this system answers: **given this paper, what is the minimal, depen
 
 ### Why RAG (2017â€“2024)?
 
-**Well-bounded**: RAG is a precisely defined subfield â€” not "all of NLP" (too broad, ~10,000 papers), not "Self-RAG and its variants" (too narrow, ~8 papers). The boundary is naturally defined by the presence of both a retrieval component and a generation component in the same system.
+**Well-bounded**: RAG is a precisely defined subfield  -  not "all of NLP" (too broad, ~10,000 papers), not "Self-RAG and its variants" (too narrow, ~8 papers). The boundary is naturally defined by the presence of both a retrieval component and a generation component in the same system.
 
-**Rich prerequisite structure**: RAG methods explicitly build on each other in a traceable chain: Attention â†’ BERT â†’ DPR â†’ RAG â†’ FiD â†’ RETRO â†’ Atlas â†’ Self-RAG â†’ CRAG. This dependency structure is not hypothetical â€” it is explicitly cited, described, and inherited in the papers themselves.
+**Rich prerequisite structure**: RAG methods explicitly build on each other in a traceable chain: Attention -> BERT -> DPR -> RAG -> FiD -> RETRO -> Atlas -> Self-RAG -> CRAG. This dependency structure is not hypothetical  -  it is explicitly cited, described and inherited in the papers themselves.
 
-**Right corpus size**: Applying inclusion criteria (must introduce an architectural contribution or a concept that â‰¥3 RAG papers depend on) yields 77 papers â€” comfortably within 50â€“100 and large enough to demonstrate non-trivial prerequisite chains.
+**Right corpus size**: Applying inclusion criteria (must introduce an architectural contribution or a concept that ≥3 RAG papers depend on) yields 77 papers  -  comfortably within 50â€“100 and large enough to demonstrate non-trivial prerequisite chains.
 
 **Genuine value**: The prerequisite-reading-path problem is not contrived. It is the real experience of anyone entering a technical subfield, and the answer is genuinely useful rather than just a demonstration artifact.
 
 ### Why not other topics?
 
-I considered knowledge graph completion (too broad, multiple disconnected subfields), dialogue systems (prerequisite chains are shallower â€” most papers are self-contained), and continual learning (smaller corpus, fewer multi-hop dependencies). RAG offered the best combination of corpus size, dependency depth, and traceability.
+I considered knowledge graph completion (too broad, multiple disconnected subfields), dialogue systems (prerequisite chains are shallower  -  most papers are self-contained) and continual learning (smaller corpus, fewer multi-hop dependencies). RAG offered the best combination of corpus size, dependency depth and traceability.
 
 
 ## 3. The Single Use Case
 
-I deliberately chose **one** use case â€” Prerequisite Reading Path Generation â€” and optimized everything for it.
+I deliberately chose **one** use case  -  Prerequisite Reading Path Generation  -  and optimized everything for it.
 
 Alternative use cases I rejected:
 
 | Use Case | Why Rejected |
 |---|---|
-| "What papers are similar to X?" | Requires semantic similarity â€” embeddings or LLM, kills determinism |
+| "What papers are similar to X?" | Requires semantic similarity  -  embeddings or LLM, kills determinism |
 | "What are the trending topics in RAG?" | Requires temporal analysis, adds complexity without pedagogical value |
 | "What papers should I read to understand concept X?" | Subsumed by the reading path use case |
 | "Which authors should I follow?" | Author profiling: adds entity type, no pedagogical benefit |
@@ -56,7 +56,7 @@ Picking one use case forced every design decision to be justified against a sing
 
 **Concept**: An abstract, reusable idea that multiple papers depend on (e.g., `dense-passage-retrieval`, `cross-attention`, `in-context-learning`). I defined 25 concepts with:
 - A human-written definition (not copied from abstracts)
-- A list of aliases (e.g., "DPR" â†’ `dense-passage-retrieval`)
+- A list of aliases (e.g., "DPR" -> `dense-passage-retrieval`)
 - A `requires_understanding` list (which concepts must be understood first)
 
 **Method**: A named architectural technique introduced by a specific paper (e.g., `fusion-in-decoder`, `self-rag`, `colbert`). I defined 20 methods, each linked to its introducing paper, its parent method (what it extends), and the concepts it uses.
@@ -65,7 +65,7 @@ Picking one use case forced every design decision to be justified against a sing
 
 I considered adding:
 
-- **Author**: Rejected. Author expertise profiling is out of scope. Adding it would require building a co-authorship graph and expertise inference â€” a separate problem.
+- **Author**: Rejected. Author expertise profiling is out of scope. Adding it would require building a co-authorship graph and expertise inference  -  a separate problem.
 - **Dataset**: Rejected. Datasets (NQ, TriviaQA, MSMARCO) are referenced pervasively but rarely form prerequisite chains. Knowing "FiD was evaluated on NQ" doesn't help you understand FiD.
 - **Venue/Conference**: Rejected. Venue information carries no prerequisite semantics.
 
@@ -75,14 +75,14 @@ I defined exactly 6 relationship types:
 
 | Relationship | Direction | Meaning |
 |---|---|---|
-| `INTRODUCES_CONCEPT` | Paper â†’ Concept | This paper is the canonical source for this concept |
-| `INTRODUCES_METHOD` | Paper â†’ Method | This paper is where this method was first described |
-| `USES_CONCEPT` | Method â†’ Concept | This method's architecture relies on this concept |
-| `EXTENDS` | Method â†’ Method | This method is a direct architectural extension of another |
-| `REQUIRES_UNDERSTANDING` | Concept â†’ Concept | You must understand concept B before concept A |
-| `BUILDS_ON` | Paper â†’ Paper | This paper explicitly extends or requires prior work |
+| `INTRODUCES_CONCEPT` | Paper -> Concept | This paper is the canonical source for this concept |
+| `INTRODUCES_METHOD` | Paper -> Method | This paper is where this method was first described |
+| `USES_CONCEPT` | Method -> Concept | This method's architecture relies on this concept |
+| `EXTENDS` | Method -> Method | This method is a direct architectural extension of another |
+| `REQUIRES_UNDERSTANDING` | Concept -> Concept | You must understand concept B before concept A |
+| `BUILDS_ON` | Paper -> Paper | This paper explicitly extends or requires prior work |
 
-**Why not `CITES`?** Citation is not the same as prerequisite. Papers cite related work (background context), ablations (competing baselines), and prior methods. Raw citation edges are noisy â€” they include papers that happen to be mentioned, not papers that are required reading. I only create `BUILDS_ON` when the citing paper's architecture or methodology actually depends on the cited work.
+**Why not `CITES`?** Citation is not the same as prerequisite. Papers cite related work (background context), ablations (competing baselines), and prior methods. Raw citation edges are noisy  -  they include papers that happen to be mentioned, not papers that are required reading. I only create `BUILDS_ON` when the citing paper's architecture or methodology actually depends on the cited work.
 
 **Why not `RELATED_TO`?** Too vague. A generic "related to" edge carries no pedagogical information. Every edge in this system has a specific semantic: it tells the reasoning engine exactly *why* one paper depends on another.
 
@@ -90,7 +90,7 @@ I defined exactly 6 relationship types:
 
 Every relationship must have:
 - `evidence`: a verbatim or paraphrased textual excerpt from the paper, or an explicit rule from `mapping_rules.yaml`
-- `confidence`: `high` (explicit mention), `medium` (structural inference), or `low` (general thematic dependency)
+- `confidence`: `high` (explicit mention), `medium` (structural inference) or `low` (general thematic dependency)
 
 No relationship exists without evidence. This constraint prevents the mapper from hallucinating connections.
 
@@ -102,7 +102,7 @@ No relationship exists without evidence. This constraint prevents the mapper fro
 | Author entities | No prerequisite semantics; adds complexity without reading-path value |
 | Dataset entities | Referenced pervasively but form no prerequisite chains |
 | Temporal "trend" edges | No pedagogical value for reading order |
-| Semantic similarity edges | Would require embeddings â€” kills determinism and inspectability |
+| Semantic similarity edges | Would require embeddings  -  kills determinism and inspectability |
 | Confidence scores on papers (impact, H-index) | Not relevant to prerequisite ordering |
 | Full paper text | Not available for all papers; abstract + metadata is sufficient for concept matching |
 
@@ -117,7 +117,7 @@ Papers were fetched from the Semantic Scholar API using seed paper IDs for known
 
 ### Step 2: Normalization (`scripts/normalize_corpus.py`)
 
-Raw API responses were cleaned: title normalization (trim, lowercase comparison for dedup), abstract cleaning (remove HTML artifacts), author list normalization (first + last name only), and venue canonicalization. Output: `data/processed/papers.jsonl`.
+Raw API responses were cleaned: title normalization (trim, lowercase comparison for dedup), abstract cleaning (remove HTML artifacts), author list normalization (first + last name only) and venue canonicalization. Output: `data/processed/papers.jsonl`.
 
 ### Step 3: Taxonomy Construction (`config/taxonomy.yaml`)
 
@@ -132,14 +132,14 @@ The mapper links papers to entities by:
 
 ### Step 5: Knowledge State Assembly (`src/research_onboarding/knowledge.py`)
 
-The mapper's output (entities + relationships) is assembled into a canonical JSON snapshot with schema validation. Every relationship endpoint is verified against the entity set â€” no dangling references are allowed.
+The mapper's output (entities + relationships) is assembled into a canonical JSON snapshot with schema validation. Every relationship endpoint is verified against the entity set  -  no dangling references are allowed.
 
 
 ## 7. LLM Usage
 
 LLMs were used in **one bounded step only**: concept mention extraction during corpus construction.
 
-Specifically: for each paper, I prompted an LLM to identify which concepts from the taxonomy the abstract was discussing. This was a classification task ("which of these 25 concepts appear in this abstract?") â€” not schema design, not edge creation, not reasoning.
+Specifically: for each paper, I prompted an LLM to identify which concepts from the taxonomy the abstract was discussing. This was a classification task ("which of these 25 concepts appear in this abstract?")  -  not schema design, not edge creation, not reasoning.
 
 **LLM was NOT used for:**
 - Defining entity types or relationship types (done by me, reasoning about the use case)
@@ -178,12 +178,12 @@ The core algorithm is a two-phase graph traversal followed by topological sort.
 ### Phase 1: Seed Collection
 
 For each concept `C` mentioned in the new paper's abstract:
-- Find the paper that `INTRODUCES_CONCEPT` C â†’ add to seed set
-- Find all concepts `P` where `C` REQUIRES_UNDERSTANDING `P` â†’ recursively include `P` and its introducer
+- Find the paper that `INTRODUCES_CONCEPT` C -> add to seed set
+- Find all concepts `P` where `C` REQUIRES_UNDERSTANDING `P` -> recursively include `P` and its introducer
 
 For each method `M` mentioned:
-- Find the paper that `INTRODUCES_METHOD` M â†’ add to seed set
-- Find all concepts `M` USES_CONCEPT â†’ recursively include those concepts and their introducers
+- Find the paper that `INTRODUCES_METHOD` M -> add to seed set
+- Find all concepts `M` USES_CONCEPT -> recursively include those concepts and their introducers
 - Follow `EXTENDS` chain: if M extends M', include M's introducer and recurse into M'
 
 For each paper `P` in the seed set:
@@ -218,7 +218,7 @@ This makes the reading path fully auditable: the user can inspect exactly why ea
 
 ### Scope: RAG-only
 
-The taxonomy and corpus are RAG-specific. A paper about reinforcement learning, computer vision, or even a different NLP subfield will receive "no prerequisites identified" â€” not because it has no prerequisites, but because none of its concepts are in the RAG taxonomy. This is a deliberate scope constraint, not a bug.
+The taxonomy and corpus are RAG-specific. A paper about reinforcement learning, computer vision, or even a different NLP subfield will receive "no prerequisites identified"  -  not because it has no prerequisites, but because none of its concepts are in the RAG taxonomy. This is a deliberate scope constraint, not a bug.
 
 **What this means**: The system is a deep specialist for one domain, not a general research assistant. This was the right tradeoff for a 77-paper corpus with a single well-defined use case.
 
@@ -229,7 +229,7 @@ Concept matching uses keyword and alias matching against a curated list, not sem
 - **Novel paraphrases will be missed**: If a 2025 paper describes dense retrieval as "vector-space passage lookup", it won't match `dense-passage-retrieval`.
 - **Disambiguation is absent**: "attention" could mean self-attention (transformer) or cross-attention (FiD) or sparse attention. The matcher will include all concepts whose aliases appear, which may over-include.
 
-The upside: zero false positives from LLM hallucination, and the alias list is directly auditable.
+The upside: zero false positives from LLM hallucination and the alias list is directly auditable.
 
 ### Manual Curation Doesn't Scale
 
@@ -248,15 +248,15 @@ All `BUILDS_ON` edges have the same weight in the topological sort. In practice,
 
 In priority order:
 
-**Reader knowledge profile** â€” Accept a list of concepts or papers the reader already knows and subtract them from the reading path. This turns the system from "read everything from zero" to "read only what you don't know". Mechanically straightforward: filter the seed set before topological sort.
+**Reader knowledge profile**  -  Accept a list of concepts or papers the reader already knows and subtract them from the reading path. This turns the system from "read everything from zero" to "read only what you don't know". Mechanically straightforward: filter the seed set before topological sort.
 
-**Confidence-weighted edges** â€” Assign weights to `BUILDS_ON` edges (strong architectural dependency vs. loose thematic connection). Use weighted topological sort to surface the critical path first, with optional peripheral papers marked as "recommended but not required."
+**Confidence-weighted edges**  -  Assign weights to `BUILDS_ON` edges (strong architectural dependency vs. loose thematic connection). Use weighted topological sort to surface the critical path first, with optional peripheral papers marked as "recommended but not required."
 
-**Automatic corpus expansion** â€” Given a new paper, suggest whether it qualifies for corpus inclusion by checking whether it introduces a new concept or method not yet in the taxonomy. Semi-automate the inclusion decision, with human review of the suggestion.
+**Automatic corpus expansion**  -  Given a new paper, suggest whether it qualifies for corpus inclusion by checking whether it introduces a new concept or method not yet in the taxonomy. Semi-automate the inclusion decision with human review of the suggestion.
 
-**Concept difficulty estimation** â€” Annotate each concept with a difficulty level (introductory, intermediate, advanced) based on how many prerequisite concepts it requires. Use this to estimate the total cognitive load of a reading path and surface a "minimum viable path" vs. a "comprehensive path."
+**Concept difficulty estimation**  -  Annotate each concept with a difficulty level (introductory, intermediate, advanced) based on how many prerequisite concepts it requires. Use this to estimate the total cognitive load of a reading path and surface a "minimum viable path" vs. a "comprehensive path."
 
-**Multi-domain support** â€” Extend the taxonomy to a second NLP subfield (e.g., instruction tuning or RLHF). Validate that the entity model and reasoning algorithm generalize without modification â€” the only change should be the taxonomy YAML and corpus.
+**Multi-domain support**  -  Extend the taxonomy to a second NLP subfield (e.g., instruction tuning or RLHF). Validate that the entity model and reasoning algorithm generalize without modification  -  the only change should be the taxonomy YAML and corpus.
 
 
 ## Summary

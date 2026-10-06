@@ -1,8 +1,8 @@
-# Research Paper Onboarding â€” Prerequisite Reading Path Generator
+# Research Paper Onboarding  -  Prerequisite Reading Path Generator
 
-> **Calyb AI Engineering Intern Assignment â€” Domain B**
+> **Calyb AI Engineering Intern Assignment  -  Domain B**
 
-Given an unseen research paper (abstract + metadata), this system returns a **dependency-ordered reading list** of the RAG corpus papers you must read first â€” and explains exactly why each one is a prerequisite.
+Given an unseen research paper (abstract + metadata), this system returns a **dependency-ordered reading list** of the RAG corpus papers you must read first  -  and explains exactly why each one is a prerequisite.
 
 
 ## What It Does
@@ -11,7 +11,7 @@ A new researcher entering the field of **Retrieval-Augmented Generation (RAG) in
 
 This system answers one question: **"What should I read first, and why?"**
 
-**The core use case â€” Prerequisite Reading Path Generation:**
+**The core use case  -  Prerequisite Reading Path Generation:**
 
 1. You provide an unseen paper (not in the corpus) as a JSON file with its title and abstract.
 2. The system identifies which RAG concepts and methods the paper references.
@@ -19,7 +19,7 @@ This system answers one question: **"What should I read first, and why?"**
 4. It resolves transitive dependencies (if concept A requires understanding concept B, the paper introducing B is included too).
 5. It returns a **topologically sorted reading list** with per-paper evidence explaining why each paper is a prerequisite.
 
-**Reasoning is fully deterministic** â€” no LLM is invoked at query time. The output for the same input is always identical.
+**Reasoning is fully deterministic**  -  no LLM is invoked at query time. The output for the same input is always identical.
 
 
 ## Quick Start
@@ -30,7 +30,7 @@ This system answers one question: **"What should I read first, and why?"**
 pip install -e .
 ```
 
-Requires Python â‰¥ 3.9. The only runtime dependency is `pyyaml`.
+Requires Python ≥ 3.9. The only runtime dependency is `pyyaml`.
 
 ### 2. Run the demo
 
@@ -52,7 +52,7 @@ python -m research_onboarding.cli onboard examples/new_input.json --json
 python -m research_onboarding.cli onboard examples/new_input_no_match.json
 ```
 
-The system gracefully returns a "no prerequisites identified" message â€” no crash, no hallucination.
+The system gracefully returns a "no prerequisites identified" message  -  no crash, no hallucination.
 
 ### 5. Inspect the Knowledge State
 
@@ -123,7 +123,7 @@ Assignment/
 â”‚   â”œâ”€â”€ acquisition.py               # Semantic Scholar API client
 â”‚   â”œâ”€â”€ normalization.py             # Metadata normalization, dedup, and JSONL serialization
 â”‚   â”œâ”€â”€ taxonomy.py                  # Load/query concepts, methods, aliases from taxonomy.yaml
-â”‚   â”œâ”€â”€ mapping.py                   # Maps normalized papers â†’ entities + typed relationships
+â”‚   â”œâ”€â”€ mapping.py                   # Maps normalized papers → entities + typed relationships
 â”‚   â”œâ”€â”€ knowledge.py                 # Builds, validates, serializes the canonical Knowledge State
 â”‚   â”œâ”€â”€ input_parser.py              # Parses unseen paper JSON + keyword-based concept matching
 â”‚   â”œâ”€â”€ reasoning.py                 # Dependency expansion + Kahn's topological sort
@@ -237,4 +237,4 @@ pytest tests/ -v
 - **LLM used only for extraction**: During corpus construction, an LLM assisted with concept mention extraction from abstracts. It was never used for schema design or reasoning.
 - **Every relationship has evidence**: No relationship exists without a textual excerpt or explicit rule that justifies it.
 - **Independently inspectable**: `knowledge_state.json` is readable as plain JSON. No database, no embeddings, no setup required.
-- **Single use case, done well**: The system does one thing â€” prerequisite reading path generation â€” and does it correctly for every case in the test suite.
+- **Single use case, done well**: The system does one thing  -  prerequisite reading path generation  -  and does it correctly for every case in the test suite.

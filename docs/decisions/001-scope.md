@@ -9,7 +9,7 @@
 
 ## 1. Context and Motivation
 
-When someone starts research in Retrieval-Augmented Generation (RAG), the biggest hurdle is not finding papersâ€”it is figuring out what to read first and why. Between 2017 and 2024, the field produced dozens of architectural variants that build directly on one another. 
+When someone starts research in Retrieval-Augmented Generation (RAG), the biggest hurdle is not finding papers - it is figuring out what to read first and why. Between 2017 and 2024, the field produced dozens of architectural variants that build directly on one another. 
 
 Existing discovery tools do not solve this problem:
 - Google Scholar ranks papers by citation counts, which favors older seminal work regardless of immediate relevance to a specific paper.
@@ -41,7 +41,7 @@ Given a previously unseen paper (title and abstract):
 ## 4. Corpus Boundary
 
 ### Why RAG (2017â€“2024)?
-1. Well-defined lineage: The core architectural ideas follow a clear line of descentâ€”from Transformers (Vaswani et al., 2017) and BERT (Devlin et al., 2018) to Dense Passage Retrieval (Karpukhin et al., 2020), standard RAG (Lewis et al., 2020), Fusion-in-Decoder (Izacard and Grave, 2021), RETRO (Borgeaud et al., 2022), and self-reflective architectures (Asai et al., 2023; Yan et al., 2024).
+1. Well-defined lineage: The core architectural ideas follow a clear line of descent - from Transformers (Vaswani et al., 2017) and BERT (Devlin et al., 2018) to Dense Passage Retrieval (Karpukhin et al., 2020), standard RAG (Lewis et al., 2020), Fusion-in-Decoder (Izacard and Grave, 2021), RETRO (Borgeaud et al., 2022), and self-reflective architectures (Asai et al., 2023; Yan et al., 2024).
 2. Right scale: The core architectural papers naturally total around 60â€“80 works. This matches the assignment scope (50â€“100 papers) without needing to pad with irrelevant papers or artificially chop off half a domain.
 3. Strong dependency structure: In RAG, concepts are tightly coupled. You cannot meaningfully grasp sequence-level marginalization without understanding dual-encoder retrieval and seq2seq models.
 
